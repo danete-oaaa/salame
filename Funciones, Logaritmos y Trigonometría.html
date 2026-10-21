@@ -1,0 +1,929 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Funciones, Logaritmos y Trigonometría</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: hoja de cuaderno cuadriculado; una columna de lectura con pestañas por unidad y secciones desplegables */
+:root{
+  --paper:#f5f6f3;
+  --sheet:#fcfcfa;
+  --ink:#17191a;
+  --muted:#5a605c;
+  --line:#d7dbd5;
+  --grid:rgba(40,70,60,.055);
+  --accent:#1d5c48;
+  --accent-soft:#e3eee8;
+  --pencil:#b3321f;
+  --pencil-soft:#fbe9e5;
+  --marker:#f6e3a0;
+  --marker-ink:#4a3c08;
+  --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#111413; --sheet:#171b19; --ink:#e7ebe7; --muted:#9da5a0; --line:#2c3330;
+    --grid:rgba(160,210,190,.04); --accent:#79c9a9; --accent-soft:#1d2e27;
+    --pencil:#f0806c; --pencil-soft:#321d19; --marker:#4a4016; --marker-ink:#f3e3a6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111413; --sheet:#171b19; --ink:#e7ebe7; --muted:#9da5a0; --line:#2c3330;
+  --grid:rgba(160,210,190,.04); --accent:#79c9a9; --accent-soft:#1d2e27;
+  --pencil:#f0806c; --pencil-soft:#321d19; --marker:#4a4016; --marker-ink:#f3e3a6;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:16px;
+  line-height:1.6;
+}
+.wrap{
+  max-width:860px;margin:0 auto;
+  padding-block:28px 64px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+header.top{display:grid;gap:6px;margin-bottom:22px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,5vw,42px);line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.lede{color:var(--muted);margin:4px 0 0;max-width:62ch}
+
+/* barra */
+.bar{
+  position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+  padding-block:10px;
+  display:grid;gap:10px;margin-bottom:22px;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--paper)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{
+  font:600 14px/1 var(--f-body);color:var(--ink);background:var(--sheet);
+  border:1px solid var(--line);border-radius:999px;padding:9px 14px;cursor:pointer;
+}
+.tab .n{font-family:var(--f-mono);font-weight:500;color:var(--muted);margin-right:6px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.tab[aria-selected="true"] .n{color:var(--paper);opacity:.75}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.search{flex:1 1 220px;min-width:0;position:relative}
+.search input{
+  width:100%;font:15px var(--f-body);color:var(--ink);background:var(--sheet);
+  border:1px solid var(--line);border-radius:8px;padding:8px 12px;
+}
+.btn{font:500 13px/1 var(--f-body);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer}
+.btn:hover,.tab:hover{border-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.count{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+
+/* paneles */
+.panel{display:grid;gap:12px}
+.panel-head{display:grid;gap:6px;margin-bottom:6px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,4vw,30px);margin:0;line-height:1.15;text-wrap:balance}
+.ubic{margin:0;color:var(--muted);max-width:68ch}
+body.searching .panel{margin-bottom:28px}
+body.searching .panel[data-empty="1"]{display:none}
+
+/* secciones desplegables */
+details.sec{
+  background:var(--sheet);border:1px solid var(--line);border-radius:10px;
+}
+details.sec > summary{
+  list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:12px;
+  padding:14px 16px;
+}
+details.sec > summary::-webkit-details-marker{display:none}
+.sec .num{font-family:var(--f-mono);font-size:12px;color:var(--muted);flex:0 0 auto;min-width:22px}
+.sec .ttl{font-family:var(--f-display);font-weight:500;font-size:18px;line-height:1.3;flex:1 1 auto;min-width:0}
+.sec .chev{flex:0 0 auto;width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg) translateY(-3px);transition:transform .18s}
+.sec[open] > summary .chev{transform:rotate(225deg) translate(-2px,-2px)}
+.sec[open] > summary{border-bottom:1px solid var(--line)}
+.body{padding:14px 18px 18px;display:grid;gap:12px;min-width:0}
+.body > *{margin:0}
+.body p{max-width:70ch}
+.body ul{padding-left:20px;display:grid;gap:6px}
+.body li{max-width:68ch}
+.sec.why .ttl::after{content:"porqué";margin-left:10px;font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:1px 6px;vertical-align:2px}
+.sec.use .ttl::after{content:"parcial";margin-left:10px;font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;background:var(--marker);color:var(--marker-ink);border-radius:4px;padding:2px 6px;vertical-align:2px}
+.sec.err{border-color:var(--pencil)}
+.sec.err .ttl,.sec.err .num{color:var(--pencil)}
+
+/* sub ventanas */
+details.sub{border:1px solid var(--line);border-radius:8px;background:var(--paper)}
+details.sub > summary{cursor:pointer;padding:10px 14px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.sub > summary::-webkit-details-marker{display:none}
+details.sub > summary::after{content:"+";font-family:var(--f-mono);color:var(--muted)}
+details.sub[open] > summary::after{content:"−"}
+details.sub > .body{padding:4px 14px 14px}
+
+.def{border-left:3px solid var(--ink);padding:4px 0 4px 14px}
+.def b{font-weight:600}
+.hl{background:var(--marker);color:var(--marker-ink);padding:0 3px;border-radius:2px}
+.warn{background:var(--pencil-soft);border-radius:8px;padding:10px 14px}
+.warn b{color:var(--pencil)}
+.key{background:var(--accent-soft);border-radius:8px;padding:10px 14px}
+.mono{font-family:var(--f-mono);font-size:.92em}
+
+.tbl{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;font-size:15px;min-width:100%;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-family:var(--f-mono);font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+td.c,th.c{text-align:center}
+
+.mathblock{overflow-x:auto;max-width:100%;padding:2px 0}
+
+/* cuadrantes */
+.quad{display:grid;grid-template-columns:1fr 1fr;max-width:340px;border:2px solid var(--ink);border-radius:6px;overflow:hidden}
+.quad div{padding:12px;border:1px solid var(--line);display:grid;gap:2px}
+.quad .q{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.quad .s{font-weight:600}
+
+/* autoevaluación */
+details.qa{border:1px dashed var(--line);border-radius:8px}
+details.qa > summary{cursor:pointer;padding:10px 14px;list-style:none}
+details.qa > summary::-webkit-details-marker{display:none}
+details.qa > summary::before{content:"?";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--ink);color:var(--paper);font:600 12px var(--f-mono);margin-right:10px;vertical-align:1px}
+details.qa[open] > summary::before{content:"✓";background:var(--accent)}
+details.qa > .ans{padding:0 14px 12px 44px;color:var(--ink)}
+.hidden-s{display:none!important}
+
+footer{margin-top:40px;color:var(--muted);font-size:13px}
+mjx-container{max-width:100%}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;margin:6px 0!important}
+@media (prefers-reduced-motion: reduce){.sec .chev{transition:none}}
+@media (max-width:520px){
+  .sec .ttl{font-size:16.5px}
+  .body{padding:12px 14px 16px}
+}
+</style>
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']], processEscapes: true },
+  svg: { fontCache: 'global' },
+  options: { enableMenu: false }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js" defer></script>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Matemática · Admisión ITBA · Dante Bogliolo Cavalieri</div>
+  <h1>Funciones, Logaritmos y Trigonometría</h1>
+  <p class="lede">Resumen teórico de los tres apuntes: conceptos, fórmulas con sus condiciones, el porqué de cada cosa, lo que se usa en los ejercicios y los errores detectados en el material.</p>
+</header>
+
+<div class="bar">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-funciones" data-panel="funciones" aria-selected="true"><span class="n">01</span>Funciones</button>
+    <button class="tab" role="tab" id="tab-exponencial" data-panel="exponencial" aria-selected="false"><span class="n">02</span>Exponencial y logaritmo</button>
+    <button class="tab" role="tab" id="tab-trigonometria" data-panel="trigonometria" aria-selected="false"><span class="n">03</span>Trigonometría</button>
+  </div>
+  <div class="tools">
+    <div class="search"><input id="q" type="search" placeholder="Buscar en las tres unidades (ej. asíntota, biyectiva, radián)" aria-label="Buscar"></div>
+    <button class="btn" id="openAll">Abrir todo</button>
+    <button class="btn" id="closeAll">Cerrar todo</button>
+    <span class="count" id="count"></span>
+  </div>
+</div>
+
+<!-- ======================= BLOQUE 1 ======================= -->
+<section class="panel" id="funciones" role="tabpanel" aria-labelledby="tab-funciones">
+  <div class="panel-head">
+    <div class="eyebrow">Unidad 1</div>
+    <h2>Funciones</h2>
+    <p class="ubic">Es la base del módulo: exponencial, logaritmo y trigonometría se estudian con exactamente estas herramientas (dominio, imagen, signos, monotonía, biyectividad, inversa). Asume Números Reales, Polinomios y Plano Cartesiano.</p>
+  </div>
+
+  <details class="sec" open>
+    <summary><span class="num">1.1</span><span class="ttl">Definición: existencia y unicidad</span><span class="chev"></span></summary>
+    <div class="body">
+      <p class="def">Una relación $f: A \to B$ es <b>función</b> si para cada $x \in A$ existe un <b>único</b> $y \in B$ con $y = f(x)$.</p>
+      <ul>
+        <li><b>Existencia:</b> $\forall x \in A,\ \exists y \in B \,/\, y = f(x)$. Ningún elemento del dominio queda sin imagen.</li>
+        <li><b>Unicidad:</b> $f(x)=y_1 \wedge f(x)=y_2 \Rightarrow y_1 = y_2$. Nadie tiene dos imágenes.</li>
+      </ul>
+      <p>Si falla cualquiera de las dos, no es función. Ejemplo del apunte: $h(x)=\frac1x$ de $\mathbb{R}$ en $\mathbb{R}$ no es función porque el $0$ no tiene imagen (falla existencia).</p>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">1.2</span><span class="ttl">Dominio, codominio, imagen y preimagen</span><span class="chev"></span></summary>
+    <div class="body">
+      <ul>
+        <li><b>Dominio</b> $\text{Dom}(f)$: conjunto de partida. <b>Codominio</b> $\text{Codom}(f)$: conjunto de llegada, lo elegís vos al definir la función.</li>
+        <li><b>Imagen de $x$:</b> el valor $f(x)$. <b>Preimagen de $y$:</b> el <i>conjunto</i> de todos los $x$ con $f(x)=y$. Puede ser vacío, tener uno o varios elementos.</li>
+        <li><b>Conjunto imagen:</b> $\text{Im}(f)=\{y\in B \,/\, \exists x\in A: f(x)=y\}$. Siempre $\text{Im}(f)\subseteq\text{Codom}(f)$.</li>
+        <li><b>Dominio natural:</b> el mayor subconjunto de $\mathbb{R}$ donde la fórmula tiene sentido. Si no te dan dominio, se usa este; si no te dan codominio, se toma $\mathbb{R}$.</li>
+      </ul>
+      <div class="key"><b>Restricciones para el dominio natural:</b> denominador $\neq 0$; radicando de índice par $\geq 0$; argumento de logaritmo $&gt; 0$ (unidad 2); tangente: $\cos x \neq 0$ (unidad 3).</div>
+      <p><b>Gráfico:</b> $\text{Graf}(f)=\{(x,f(x)) \,/\, x\in A\}$. La imagen es la <span class="hl">proyección del gráfico sobre el eje $y$</span>.</p>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">1.3</span><span class="ttl">Ceros, signos y crecimiento</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>Los tres conjuntos son subconjuntos del <b>dominio</b> (son valores de $x$, no de $y$):</p>
+      <div class="mathblock">$$C^0=\{x/f(x)=0\}\qquad C^+=\{x/f(x)&gt;0\}\qquad C^-=\{x/f(x)&lt;0\}$$</div>
+      <p>Las raíces son los cortes con el eje $x$. Para estudiar signos de un producto se usan <b>rectas de signos</b> por factor (forma factorizada).</p>
+      <div class="tbl"><table>
+        <tr><th>Propiedad en $I$</th><th>Condición $\forall x_1&lt;x_2$ en $I$</th></tr>
+        <tr><td>Creciente</td><td>$f(x_1)\le f(x_2)$</td></tr>
+        <tr><td>Estrictamente creciente</td><td>$f(x_1)&lt; f(x_2)$</td></tr>
+        <tr><td>Decreciente</td><td>$f(x_1)\ge f(x_2)$</td></tr>
+        <tr><td>Estrictamente decreciente</td><td>$f(x_1)&gt; f(x_2)$</td></tr>
+      </table></div>
+      <ul>
+        <li>$I^\uparrow(f)$ e $I^\downarrow(f)$ se dan con <b>intervalos abiertos</b> por convención.</li>
+        <li><b>Monótona:</b> no cambia de comportamiento en todo el intervalo. Donde cambia hay un <b>extremo</b> (máximo o mínimo).</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">1.4</span><span class="ttl">Funciones pares e impares</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>Requisito previo para ambas: el dominio es simétrico ($x\in A\Rightarrow -x\in A$).</p>
+      <ul>
+        <li><b>Par:</b> $f(-x)=f(x)$. Gráfico simétrico respecto del eje $y$. Ej.: $x^2$, $|x|$, $\cos x$.</li>
+        <li><b>Impar:</b> $f(-x)=-f(x)$. Gráfico simétrico respecto del origen. Ej.: $2x$, $\sin x$, $\tan x$.</li>
+      </ul>
+      <p>Puede no ser ninguna de las dos ($2x+1$). Para <b>negar</b> alcanza un contraejemplo; para <b>afirmar</b> hay que probarlo con $x$ genérico.</p>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">1.5</span><span class="ttl">Inyectividad, sobreyectividad, biyectividad</span><span class="chev"></span></summary>
+    <div class="body">
+      <div class="tbl"><table>
+        <tr><th>Propiedad</th><th>Definición</th><th>Test gráfico</th><th>Cómo se niega</th></tr>
+        <tr><td><b>Inyectiva</b></td><td>$f(x_1)=f(x_2)\Rightarrow x_1=x_2$</td><td>Toda recta horizontal corta a lo sumo una vez</td><td>Dos $x$ distintos con igual imagen</td></tr>
+        <tr><td><b>Sobreyectiva</b></td><td>$\forall y\in B,\ \exists x\in A/f(x)=y$, o sea $\text{Im}(f)=\text{Codom}(f)$</td><td>Toda recta horizontal de altura en $B$ corta al menos una vez</td><td>Un $y\in B$ sin preimagen</td></tr>
+        <tr><td><b>Biyectiva</b></td><td>Inyectiva y sobreyectiva</td><td>Exactamente una vez</td><td>Que falle alguna</td></tr>
+      </table></div>
+      <div class="warn"><b>Ojo:</b> la sobreyectividad depende del codominio que elijas. $x^2-4$ de $\mathbb{R}$ en $\mathbb{R}$ no es sobreyectiva; de $\mathbb{R}$ en $[-4,+\infty)$ sí. Son funciones distintas aunque tengan la misma fórmula.</div>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">1.6</span><span class="ttl">Familias de funciones</span><span class="chev"></span></summary>
+    <div class="body">
+      <details class="sub">
+        <summary>Lineal $\;f(x)=mx+b$</summary>
+        <div class="body">
+          <ul>
+            <li>$m$ pendiente, $b$ ordenada al origen. Entre dos puntos: $m=\dfrac{y_2-y_1}{x_2-x_1}$.</li>
+            <li>$m&gt;0$ creciente, $m&lt;0$ decreciente, $m=0$ constante.</li>
+            <li>Si $m\neq0$: una sola raíz, estrictamente monótona y biyectiva.</li>
+            <li>Si $m=0$ (pregunta del apunte): no es inyectiva ni sobreyectiva; no tiene raíces, salvo $b=0$ (todo $\mathbb{R}$ es raíz).</li>
+          </ul>
+        </div>
+      </details>
+      <details class="sub">
+        <summary>Valor absoluto $\;f(x)=a|x-h|+k$</summary>
+        <div class="body">
+          <div class="mathblock">$$|x|=\begin{cases}x & x\ge0\\ -x & x&lt;0\end{cases}$$</div>
+          <ul>
+            <li>Vértice en $(h,k)$. Forma $\vee$ si $a&gt;0$, $\wedge$ si $a&lt;0$. Si $|a|&gt;1$, la V es más cerrada.</li>
+            <li>$|x|$: dominio $\mathbb{R}$, imagen $[0,+\infty)$, par, cero en $0$, decrece en $(-\infty,0)$ y crece en $(0,+\infty)$.</li>
+            <li>Para trabajarla se abre por tramos con la definición. Una expresión como $x-|x|$ no es una V corrida: hay que abrirla.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="sub">
+        <summary>Cuadrática $\;f(x)=ax^2+bx+c,\ a\neq0$</summary>
+        <div class="body">
+          <div class="tbl"><table>
+            <tr><th>Forma</th><th>Expresión</th><th>Qué se lee</th></tr>
+            <tr><td>Polinómica</td><td>$ax^2+bx+c$</td><td>Ordenada al origen $c$</td></tr>
+            <tr><td>Canónica</td><td>$a(x-x_v)^2+y_v$</td><td>Vértice; ideal para graficar por corrimientos</td></tr>
+            <tr><td>Factorizada</td><td>$a(x-r_1)(x-r_2)$</td><td>Raíces; estudio de signos</td></tr>
+          </table></div>
+          <div class="mathblock">$$x_v=-\frac{b}{2a}=\frac{r_1+r_2}{2}\qquad y_v=f(x_v)\qquad r_{1,2}=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$</div>
+          <ul>
+            <li>$a&gt;0$: cóncava hacia arriba, vértice mínimo, $\text{Im}=[y_v,+\infty)$. $a&lt;0$: hacia abajo, máximo, $\text{Im}=(-\infty,y_v]$.</li>
+            <li>De $\mathbb{R}$ en $\mathbb{R}$ <b>nunca</b> es inyectiva ni sobreyectiva (puntos a igual distancia de $x_v$ tienen igual imagen).</li>
+          </ul>
+        </div>
+      </details>
+      <details class="sub">
+        <summary>Raíz cuadrada $\;f(x)=\sqrt{x}$</summary>
+        <div class="body">
+          <p>Dominio $[0,+\infty)$, imagen $[0,+\infty)$, estrictamente creciente. Su forma es media parábola acostada: es la inversa de $x^2$ restringida a $[0,+\infty)$.</p>
+          <p>Con transformaciones, como $\sqrt{-2x+1}+1$: dominio por radicando $\ge0$, imagen acotando ($\sqrt{\cdot}\ge0\Rightarrow f\ge1$) y probando que se alcanzan todos los valores.</p>
+        </div>
+      </details>
+      <details class="sub">
+        <summary>Homográfica $\;f(x)=\dfrac{ax+b}{cx+d}$</summary>
+        <div class="body">
+          <p>Condiciones: $c\neq0$ (si no, es lineal) y $ad-bc\neq0$ (si no, es constante). Gráfico: hipérbola.</p>
+          <div class="mathblock">$$\text{AV: } x=-\frac dc\qquad \text{AH: } y=\frac ac\qquad \text{Im}(f)=\mathbb{R}-\left\{\tfrac ac\right\}$$</div>
+          <ul>
+            <li>$ad-bc&lt;0$: cada rama decreciente, ramas en regiones 1.ª y 3.ª (como $1/x$).</li>
+            <li>$ad-bc&gt;0$: cada rama creciente, ramas en 2.ª y 4.ª.</li>
+            <li>Es inyectiva en su dominio natural; no es sobreyectiva sobre $\mathbb{R}$ (le falta $a/c$).</li>
+          </ul>
+        </div>
+      </details>
+      <details class="sub">
+        <summary>Por tramos</summary>
+        <div class="body">
+          <p>Cada expresión vale solo en su subconjunto; los subconjuntos son disjuntos y su unión es el dominio.</p>
+          <ul>
+            <li>Toda solución encontrada en un tramo tiene que <b>pertenecer a ese tramo</b> (en el Ej. 3.a, $x=-\tfrac12$ se descarta).</li>
+            <li>En el punto de corte se evalúan ambos tramos: punto cerrado donde vale, punto abierto en el límite del otro.</li>
+            <li>El dominio natural es la unión de lo que aporta cada tramo, ya restringido.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">1.7</span><span class="ttl">Composición y desplazamientos</span><span class="chev"></span></summary>
+    <div class="body">
+      <p class="def">$(g\circ f)(x)=g(f(x))$: primero $f$, después $g$. $\ \text{Dom}(g\circ f)=\{x\in\text{Dom}(f)\,/\,f(x)\in\text{Dom}(g)\}$.</p>
+      <ul>
+        <li>Si $\text{Im}(f)\subseteq\text{Dom}(g)$, entonces $\text{Dom}(g\circ f)=\text{Dom}(f)$.</li>
+        <li>No es conmutativa: en general $g\circ f\neq f\circ g$.</li>
+      </ul>
+      <div class="tbl"><table>
+        <tr><th>Expresión ($h,k&gt;0$)</th><th>Efecto sobre el gráfico de $f$</th></tr>
+        <tr><td>$f(x-h)$</td><td>$h$ unidades a la derecha</td></tr>
+        <tr><td>$f(x+h)$</td><td>$h$ unidades a la izquierda</td></tr>
+        <tr><td>$f(x)+k$ / $f(x)-k$</td><td>$k$ arriba / abajo</td></tr>
+        <tr><td>$-f(x)$</td><td>Simetría respecto del eje $x$</td></tr>
+        <tr><td>$f(-x)$</td><td>Simetría respecto del eje $y$</td></tr>
+        <tr><td>$|f(x)|$</td><td>Lo que estaba bajo el eje $x$ se refleja hacia arriba</td></tr>
+      </table></div>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">1.8</span><span class="ttl">Función inversa</span><span class="chev"></span></summary>
+    <div class="body">
+      <p class="def">Existe <b>si y solo si</b> $f:A\to B$ es biyectiva. Se define $f^{-1}:B\to A$ con $f^{-1}(y)=x \iff f(x)=y$.</p>
+      <ul>
+        <li>$(f^{-1}\circ f)(x)=x\ \ \forall x\in A$ y $(f\circ f^{-1})(y)=y\ \ \forall y\in B$.</li>
+        <li>$\text{Dom}(f^{-1})=\text{Im}(f)$, $\ \text{Im}(f^{-1})=\text{Dom}(f)$; $f^{-1}$ también es biyectiva y $(f^{-1})^{-1}=f$.</li>
+        <li>Gráficos simétricos respecto de $y=x$.</li>
+      </ul>
+      <p><b>Procedimiento:</b> verificar (o forzar) la biyectividad, despejar $x$ de $y=f(x)$, renombrar la variable, escribir dominio y codominio de $f^{-1}$.</p>
+      <p>Para invertir algo que no es biyectivo ($x^2$, $\sin x$): <span class="hl">restringir el dominio</span> para la inyectividad y <span class="hl">ajustar el codominio a la imagen</span> para la sobreyectividad. La restricción no es única, pero una vez elegida la inversa sí lo es.</p>
+    </div>
+  </details>
+
+  <details class="sec why">
+    <summary><span class="num">1.9</span><span class="ttl">Relaciones e intuición</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>La definición de función se parte en existencia y unicidad porque son exactamente lo necesario para evaluar sin ambigüedad. Esa dupla reaparece en la inversa: para volver de $y$ a $x$, la <b>inyectividad</b> garantiza la unicidad de la vuelta (si dos $x$ tuvieran la misma imagen, no sabrías a cuál volver) y la <b>sobreyectividad</b> garantiza la existencia (si un $y$ no es imagen de nadie, no hay adónde volver). Por eso inversa $\iff$ biyectiva.</p>
+      <p>La simetría respecto de $y=x$ es casi trivial: si $(a,b)$ está en el gráfico de $f$, entonces $f^{-1}(b)=a$, así que $(b,a)$ está en el de $f^{-1}$. Intercambiar coordenadas es reflejar respecto de $y=x$.</p>
+      <p>Los corrimientos parecen "al revés" porque lo que $f$ hacía en $0$, $f(x-h)$ lo hace cuando $x-h=0$, es decir en $x=h$: todo el dibujo llega $h$ unidades más tarde.</p>
+      <p>El vértice sale de completar cuadrados: $ax^2+bx+c=a\left(x+\tfrac{b}{2a}\right)^2+c-\tfrac{b^2}{4a}$. El cuadrado se anula en $x=-\tfrac b{2a}$, que es el punto más bajo (o más alto). Que $x_v$ sea el promedio de las raíces es la simetría de la parábola.</p>
+      <p>La homográfica se entiende entera con una cuenta:</p>
+      <div class="mathblock">$$\frac{ax+b}{cx+d}=\frac ac+\frac{(bc-ad)/c^2}{x+d/c}$$</div>
+      <p>Es $1/x$ multiplicada por $k=\tfrac{bc-ad}{c^2}$, corrida $-\tfrac dc$ en horizontal y $\tfrac ac$ en vertical. Las asíntotas son los corrimientos; $y=\tfrac ac$ nunca se alcanza porque el segundo término no se anula; si $ad-bc&lt;0$ entonces $k&gt;0$ y se comporta como $1/x$; si $ad-bc&gt;0$ queda reflejada y cada rama crece; si $ad=bc$, $k=0$ y la función es constante.</p>
+    </div>
+  </details>
+
+  <details class="sec use">
+    <summary><span class="num">1.10</span><span class="ttl">Lo que hay que saber usar</span><span class="chev"></span></summary>
+    <div class="body">
+      <ul>
+        <li><b>Estudio completo:</b> dominio, cortes con los ejes, gráfico, $C^+$ y $C^-$, intervalos de crecimiento, biyectividad. Reconocé la familia y aplicá su receta.</li>
+        <li><b>Imagen analítica en dos pasos:</b> acotar con $\sqrt{\cdot}\ge0$, $|\cdot|\ge0$ o $x^2\ge0$; después probar que todos los valores de la cota se alcanzan despejando $x$.</li>
+        <li><b>Negar con contraejemplo, afirmar con prueba genérica</b> (paridad, inyectividad, sobreyectividad).</li>
+        <li><b>Inversa con codominio impuesto</b> (Ej. 5.d): graficar con dominio natural, buscar dónde $f$ alcanza el borde del codominio y recortar el dominio.</li>
+        <li><b>Elevar al cuadrado al despejar</b> solo es equivalente si ambos miembros son $\ge0$ (Ej. 5.c).</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec err">
+    <summary><span class="num">1.11</span><span class="ttl">Errores del apunte</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>El contenido está bien. Solo un typo: en el Ej. 5.d dice "Hallar AR"; quiere decir "Hallar $A\subseteq\mathbb{R}$".</p>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">1.12</span><span class="ttl">Autoevaluación</span><span class="chev"></span></summary>
+    <div class="body">
+      <details class="qa"><summary>¿Por qué $f(x)=x^2$ de $\mathbb{R}$ en $\mathbb{R}$ no tiene inversa?</summary><div class="ans">No es inyectiva ($f(2)=f(-2)$) ni sobreyectiva ($-1\notin\text{Im}$). Restringida a $[0,+\infty)\to[0,+\infty)$ sí, y la inversa es $\sqrt{x}$.</div></details>
+      <details class="qa"><summary>Si $f(x)=-2x$ y $g(x)=\sqrt{x}$, ¿cuál es $\text{Dom}(g\circ f)$?</summary><div class="ans">Pedimos $-2x\ge0$, o sea $x\le0$: $\text{Dom}=(-\infty,0]$ y $(g\circ f)(x)=\sqrt{-2x}$.</div></details>
+      <details class="qa"><summary>¿Cuál es la imagen de $f(x)=\dfrac{3x-5}{x-1}$?</summary><div class="ans">$\mathbb{R}-\{3\}$, porque la AH es $y=a/c=3$ y ese valor nunca se alcanza.</div></details>
+      <details class="qa"><summary>Vértice de $f(x)=2x^2-4x-6$</summary><div class="ans">$x_v=\frac{4}{4}=1$, $y_v=f(1)=-8$. Vértice $(1,-8)$; forma canónica $2(x-1)^2-8$.</div></details>
+      <details class="qa"><summary>¿$f(x)=2x+1$ es par, impar o ninguna?</summary><div class="ans">Ninguna: $f(1)=3$ y $f(-1)=-1$; $-1\neq3$ (no par) y $-1\neq-3$ (no impar).</div></details>
+    </div>
+  </details>
+</section>
+
+<!-- ======================= BLOQUE 2 ======================= -->
+<section class="panel" id="exponencial" role="tabpanel" aria-labelledby="tab-exponencial" hidden>
+  <div class="panel-head">
+    <div class="eyebrow">Unidad 2</div>
+    <h2>Exponencial y logaritmo</h2>
+    <p class="ubic">Aplica la unidad 1 (inversa, desplazamientos, inyectividad) a una familia nueva. El logaritmo nace como la inversa de la exponencial. Ambas son centrales en análisis: crecimiento, decaimiento, ecuaciones diferenciales.</p>
+  </div>
+
+  <details class="sec" open>
+    <summary><span class="num">2.1</span><span class="ttl">Ecuaciones exponenciales: misma base</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>La incógnita está en el exponente. Estrategia: <span class="hl">expresar todo con la misma base</span> usando propiedades de potencias. Si $a^x=a^p$, la solución es $x=p$.</p>
+      <p>Resolver no alcanza: hay que <b>justificar que no hay otra solución</b>. Eso lo da la inyectividad de $a^x$ (sección 2.10).</p>
+      <ul>
+        <li>$5^x=\sqrt[4]5=5^{1/4}\Rightarrow x=\tfrac14$.</li>
+        <li>Si $a&gt;0$, $a^x&gt;0$ para todo $x$: $5^x=-2$ y $(2/7)^x=0$ no tienen solución.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">2.2</span><span class="ttl">Definición de logaritmo y condiciones iniciales</span><span class="chev"></span></summary>
+    <div class="body">
+      <p class="def">$\log_a b=x \iff a^x=b$, con $a&gt;0$, $a\neq1$, $b&gt;0$. Es el exponente al que hay que elevar la base para obtener $b$.</p>
+      <div class="tbl"><table>
+        <tr><th>Condición</th><th>Por qué</th></tr>
+        <tr><td>$a&gt;0$</td><td>Con base negativa hay exponentes sin sentido en $\mathbb{R}$, como $(-4)^{1/2}$. Con $a=0$, $0^x$ no genera los valores de $b$.</td></tr>
+        <tr><td>$a\neq1$</td><td>$1^x=1$ siempre: $\log_1 1$ sería cualquier número y $\log_1 b$ con $b\neq1$ no existiría.</td></tr>
+        <tr><td>$b&gt;0$</td><td>Con $a&gt;0$, $a^x$ nunca da $0$ ni negativo, así que no habría exponente posible.</td></tr>
+      </table></div>
+      <p>Identidades que salen de leer la definición en cada sentido: $\;a^{\log_a b}=b\;$ y $\;\log_a(a^x)=x$.</p>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">2.3</span><span class="ttl">Bases especiales y el número $e$</span><span class="chev"></span></summary>
+    <div class="body">
+      <ul>
+        <li>$\ln x=\log_e x$ (logaritmo natural o neperiano). $\ \log x=\log_{10}x$.</li>
+        <li>$e\approx2{,}71828$, irracional. Surge del interés compuesto de Bernoulli (1683): al 100&nbsp;% anual, capitalizar más seguido da más, pero el total no crece sin límite; $\left(1+\frac1n\right)^n$ se acerca a $e$.</li>
+        <li>Con capitalización mensual se obtiene $\left(1+\frac1{12}\right)^{12}\approx2{,}61$ (el desafío del apunte).</li>
+        <li>Leibniz lo llamó $b$; Euler le puso $e$, probó que es irracional y lo conectó con casi toda la matemática.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">2.4</span><span class="ttl">Propiedades del logaritmo</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>Con $a&gt;0$, $a\neq1$ y argumentos positivos:</p>
+      <div class="tbl"><table>
+        <tr><th>Propiedad</th><th>Viene de la potencia</th></tr>
+        <tr><td>$\log_a(bc)=\log_a b+\log_a c$</td><td>$a^n\cdot a^m=a^{n+m}$</td></tr>
+        <tr><td>$\log_a\frac bc=\log_a b-\log_a c$</td><td>$a^n/a^m=a^{n-m}$</td></tr>
+        <tr><td>$\log_a(b^c)=c\log_a b$</td><td>$(a^n)^c=a^{nc}$</td></tr>
+        <tr><td>$\log_a b=\dfrac{\log_c b}{\log_c a}$ (cambio de base)</td><td>Combinación de las anteriores</td></tr>
+        <tr><td>$\log_a 1=0$, $\ \log_a a=1$</td><td>$a^0=1$, $a^1=a$</td></tr>
+      </table></div>
+      <div class="warn"><b>No existe</b> propiedad para $\log_a(b+c)$. Y $\log_a(b^c)\neq(\log_a b)^c$; el segundo se escribe $\log_a^c b$.</div>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">2.5</span><span class="ttl">Función exponencial</span><span class="chev"></span></summary>
+    <div class="body">
+      <p class="def">$f:\mathbb{R}\to(0,+\infty)$, $f(x)=a^x$ con $a&gt;0$, $a\neq1$. Es biyectiva y pasa por $(0,1)$.</p>
+      <div class="tbl"><table>
+        <tr><th></th><th>$a&gt;1$</th><th>$0&lt;a&lt;1$</th></tr>
+        <tr><td>Monotonía</td><td>Estrictamente creciente</td><td>Estrictamente decreciente</td></tr>
+        <tr><td>Asíntota</td><td>$y=0$ a izquierda</td><td>$y=0$ a derecha</td></tr>
+        <tr><td>Comportamiento</td><td>Lenta en $(-\infty,0)$, muy rápida en $(0,+\infty)$</td><td>Al revés</td></tr>
+      </table></div>
+      <p>$e^x$ es creciente porque $e&gt;1$. Para graficar alcanzan dos o tres puntos y conocer la forma; la tabla de valores sola puede llevar a unir mal los puntos.</p>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">2.6</span><span class="ttl">Función logaritmo</span><span class="chev"></span></summary>
+    <div class="body">
+      <p class="def">$f:(0,+\infty)\to\mathbb{R}$, $f(x)=\log_a x$: la inversa de $a^x$. Su gráfico es el de $a^x$ reflejado respecto de $y=x$.</p>
+      <ul>
+        <li>Asíntota vertical $x=0$. Pasa por $(1,0)$ y $(a,1)$.</li>
+        <li>$a&gt;1$: creciente, muy rápido entre $0$ y $1$ (recorre todo el semieje negativo) y después muy lento. $0&lt;a&lt;1$: decreciente.</li>
+        <li>Dominio natural: <b>argumento $&gt;0$</b>. Esto da la ubicación de la AV en funciones transformadas.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">2.7</span><span class="ttl">Transformaciones y gráficos</span><span class="chev"></span></summary>
+    <div class="body">
+      <ul>
+        <li>$f(x)=k\cdot b^x+c$: asíntota horizontal $y=c$.</li>
+        <li>$f(x)=K\log_a(Bx+C)+D$: si $K\cdot B&gt;0$ conserva la monotonía de $\log_a$; si $K\cdot B&lt;0$ la invierte.</li>
+        <li><b>Dejá el exponente o argumento mónico</b> para leer el corrimiento: $2^{3x+9}=(2^3)^{x+3}=8^{x+3}$; $\ln(1-x)=\ln[-(x-1)]$.</li>
+        <li>Factores distintos de $\pm1$ ($2^{3x}$, $3\cdot2^x$) deforman el gráfico: ya no se calca de $2^x$.</li>
+        <li>Monotonía sin intersección con el eje $y$: calcular otro punto o razonar las simetrías aplicadas.</li>
+        <li><b>Módulo:</b> $2^{|{-2x+4}|}$ o $\log_{1/2}|2-x|$ se abren por tramos; $|q(x)|$ refleja hacia arriba lo que está bajo el eje $x$. Una asíntota de un gráfico auxiliar puede no quedar en el gráfico final (Ej. 3.d).</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">2.8</span><span class="ttl">Coseno y seno hiperbólicos</span><span class="chev"></span></summary>
+    <div class="body">
+      <div class="mathblock">$$\cosh x=\frac{e^x+e^{-x}}{2}\ \ (\text{par})\qquad \operatorname{senh}x=\frac{e^x-e^{-x}}{2}\ \ (\text{impar})$$</div>
+      <p>$\cosh$ parece una parábola pero no lo es (no viene de una cuadrática). Siempre es positiva; más preciso: $\cosh x\ge1$, con mínimo en $x=0$. Se usan mucho en la carrera.</p>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">2.9</span><span class="ttl">Ecuaciones exponenciales y logarítmicas: técnicas</span><span class="chev"></span></summary>
+    <div class="body">
+      <details class="sub" open>
+        <summary>Exponenciales</summary>
+        <div class="body">
+          <ul>
+            <li><b>Igualar bases</b> e igualar exponentes por inyectividad: $2^{2x+1}=8^{x-1}=2^{3x-3}\Rightarrow x=4$.</li>
+            <li><b>Aplicar logaritmo</b> a ambos miembros: $3^r=5\Rightarrow r=\log_3 5$.</li>
+            <li><b>Con sumas:</b> agrupar por base y sacar factor común (Ej. 4.d). No se puede aplicar log a una suma término a término.</li>
+            <li><b>Sustitución</b> $t=e^x$ (con $t&gt;0$): $e^{2x}-3e^x+2=0\Rightarrow t^2-3t+2=0\Rightarrow t\in\{1,2\}\Rightarrow x\in\{0,\ln2\}$.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="sub" open>
+        <summary>Logarítmicas</summary>
+        <div class="body">
+          <ul>
+            <li>Plantear las <b>C.I. primero</b>: argumentos $&gt;0$; si la base tiene $x$, base $&gt;0$ y $\neq1$. Si son complicadas, se dejan enunciadas y se chequean al final.</li>
+            <li>Llevar todo a la misma base (cambio de base) y juntar con propiedades.</li>
+            <li>Usar la definición o la inyectividad del logaritmo.</li>
+            <li><b>Contrastar con las C.I.</b> En el Ej. 4.g los dos candidatos $-1\pm\sqrt2$ fallan $x-2&gt;0$, así que $S=\emptyset$. En el 4.h, $x=0$ falla la base $\neq1$.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">2.10</span><span class="ttl">Inecuaciones: monotonía</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>Para desigualdades la inyectividad no sirve (es sobre igualdades). Se usa la monotonía:</p>
+      <ul>
+        <li>Aplicar una función <b>estrictamente creciente</b> a ambos miembros conserva el sentido.</li>
+        <li>Aplicar una <b>estrictamente decreciente</b> lo invierte.</li>
+        <li>Base $&gt;1$: creciente. Base entre $0$ y $1$: decreciente.</li>
+      </ul>
+      <p>Solo cambia el sentido: los miembros no se mueven de lado y la desigualdad no pasa de estricta a amplia. Al final, <b>intersecar con las C.I.</b> (Ej. 5.b: $(-2,-1)\cup(0,1)$).</p>
+    </div>
+  </details>
+
+  <details class="sec why">
+    <summary><span class="num">2.11</span><span class="ttl">Relaciones e intuición</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>Todo el bloque gira alrededor de una idea: <b>$a^x$ es biyectiva</b>. Ser sobreyectiva sobre $(0,\infty)$ garantiza que $a^x=b$ tiene solución si $b&gt;0$; ser inyectiva garantiza que es única. Por eso el logaritmo está bien definido como operación: si hubiera dos exponentes con $a^c=a^{\hat c}$, la inyectividad obliga a $c=\hat c$. Y por eso "igualar exponentes" no es un truco, es aplicar $f(t_1)=f(t_2)\Rightarrow t_1=t_2$.</p>
+      <p>Las propiedades del logaritmo son las de potencias leídas desde el exponente. Si $X=a^n$ e $Y=a^m$, entonces $XY=a^{n+m}$, que dice exactamente $\log_a(XY)=n+m$. El apunte lo prueba con unicidad: $a^{\log_a b+\log_a c}=bc$, así que ese número es <i>la</i> solución de $a^x=bc$. Como no hay regla para $a^n+a^m$, tampoco hay regla para $\log(X+Y)$.</p>
+      <p>Usar propiedades puede <b>cambiar el dominio</b>: $\log_2(x^2)$ vive en $\mathbb{R}-\{0\}$, pero $2\log_2 x$ solo en $(0,\infty)$. Lo correcto en todo el dominio es $\log_2(x^2)=2\log_2|x|$. Por eso las C.I. se plantean antes de transformar.</p>
+    </div>
+  </details>
+
+  <details class="sec use">
+    <summary><span class="num">2.12</span><span class="ttl">Lo que hay que saber usar</span><span class="chev"></span></summary>
+    <div class="body">
+      <ul>
+        <li>Elegir la técnica según la forma: misma base, logaritmo, factor común o sustitución.</li>
+        <li>C.I. al principio y verificación al final en toda ecuación o inecuación logarítmica.</li>
+        <li>Mirar la base (y las simetrías) para saber si se invierte la desigualdad.</li>
+        <li>Graficar: función base, simetrías y corrimientos en orden, asíntota (horizontal en exp, vertical en log) y un par de puntos.</li>
+        <li>Inversas: $y=2^{x-3}+1\Rightarrow f^{-1}(x)=\log_2(x-1)+3$, con dominio $(1,+\infty)$.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec err">
+    <summary><span class="num">2.13</span><span class="ttl">Errores del apunte</span><span class="chev"></span></summary>
+    <div class="body">
+      <ul>
+        <li><b>Ej. 5.b:</b> dice que $2^x$ "es una función decreciente, con lo que no cambia el sentido". Es <b>creciente</b> (base $2&gt;1$), y por eso no se invierte. El resultado está bien; la justificación es contradictoria.</li>
+        <li><b>Ej. 3.f:</b> el enunciado dice $|\log(x+3)-1|$, pero el desarrollo usa $q(x)=\log(x+3)+1$. El resultado $x=-\tfrac{29}{10}$ corresponde a $+1$. Con $-1$, el rebote estaría en $x=7$.</li>
+        <li><b>Ej. 4.a:</b> el título dice $2^{x+3}=16$ pero se resuelve $2^{x^2+3}=16$. Con $x+3$ habría una sola solución, $x=1$.</li>
+        <li><b>Ej. 4.g:</b> $\log_8(x^2-4)^3$ significa $\log_8\big((x^2-4)^3\big)$.</li>
+        <li><b>Ej. 2.b:</b> compara con el "ejemplo 1.a"; se refiere al 2.a.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">2.14</span><span class="ttl">Autoevaluación</span><span class="chev"></span></summary>
+    <div class="body">
+      <details class="qa"><summary>Calcular $\log_4 32$</summary><div class="ans">$32=2^5=(4^{1/2})^5=4^{5/2}$, entonces $\log_4 32=\tfrac52$.</div></details>
+      <details class="qa"><summary>¿Por qué no se admite base $1$?</summary><div class="ans">Porque $1^x=1$ para todo $x$: el resultado no sería único para $b=1$ y no existiría para $b\neq1$.</div></details>
+      <details class="qa"><summary>Resolver $\left(\tfrac12\right)^x\ge\left(\tfrac12\right)^3$</summary><div class="ans">Base menor que 1: la función es decreciente, se invierte el sentido. $x\le3$.</div></details>
+      <details class="qa"><summary>Dominio de $f(x)=\dfrac{\sqrt{x+5}}{\log(x+4)}$</summary><div class="ans">$x\ge-5$, $x&gt;-4$ y $\log(x+4)\neq0\Rightarrow x\neq-3$. $\text{Dom}=(-4,-3)\cup(-3,+\infty)$.</div></details>
+      <details class="qa"><summary>Asíntota y monotonía de $g(x)=-2^{3x+9}+1$</summary><div class="ans">$g(x)=-8^{x+3}+1$: AH $y=1$, decreciente (la simetría respecto del eje $x$ invierte el crecimiento de $8^x$), imagen $(-\infty,1)$.</div></details>
+    </div>
+  </details>
+</section>
+
+<!-- ======================= BLOQUE 3 ======================= -->
+<section class="panel" id="trigonometria" role="tabpanel" aria-labelledby="tab-trigonometria" hidden>
+  <div class="panel-head">
+    <div class="eyebrow">Unidad 3</div>
+    <h2>Trigonometría</h2>
+    <p class="ubic">Recorrido: triángulo rectángulo, ángulos orientados, circunferencia trigonométrica, funciones de $\mathbb{R}$, ecuaciones e inversas. Asume semejanza (Thales), Pitágoras y la unidad 1. Se usa en física (vectores, oscilaciones) y en todo análisis.</p>
+  </div>
+
+  <details class="sec" open>
+    <summary><span class="num">3.1</span><span class="ttl">Razones en el triángulo rectángulo</span><span class="chev"></span></summary>
+    <div class="body">
+      <div class="mathblock">$$\sin\alpha=\frac{\text{opuesto}}{\text{hipotenusa}}\qquad\cos\alpha=\frac{\text{adyacente}}{\text{hipotenusa}}\qquad\tan\alpha=\frac{\text{opuesto}}{\text{adyacente}}=\frac{\sin\alpha}{\cos\alpha}$$</div>
+      <p>Recíprocas: $\operatorname{cosec}=\frac1{\sin}$, $\ \sec=\frac1{\cos}$, $\ \operatorname{cotg}=\frac1{\tan}$. Pitágoras: $a^2+b^2=c^2$.</p>
+      <ul>
+        <li>Seno y coseno de un agudo son menores que 1 (cateto menor que hipotenusa).</li>
+        <li>No tienen unidades: sirven igual con fuerzas. En el plano inclinado, $P_\parallel=P\sin\alpha$ y $P_\perp=P\cos\alpha$.</li>
+        <li><b>Elevación y depresión:</b> ángulo entre la visual y la <b>horizontal</b>, nunca desde la vertical.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">3.2</span><span class="ttl">Ángulos especiales y complementarios</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>Truco de construcción: en el seno escribís $\frac{\sqrt0}2,\frac{\sqrt1}2,\frac{\sqrt2}2,\frac{\sqrt3}2,\frac{\sqrt4}2$; el coseno es la misma fila al revés; la tangente es el cociente.</p>
+      <div class="tbl"><table>
+        <tr><th>$\alpha$</th><th class="c">$0$</th><th class="c">$\frac\pi6$ (30°)</th><th class="c">$\frac\pi4$ (45°)</th><th class="c">$\frac\pi3$ (60°)</th><th class="c">$\frac\pi2$ (90°)</th></tr>
+        <tr><td>$\sin$</td><td class="c">$0$</td><td class="c">$\frac12$</td><td class="c">$\frac{\sqrt2}2$</td><td class="c">$\frac{\sqrt3}2$</td><td class="c">$1$</td></tr>
+        <tr><td>$\cos$</td><td class="c">$1$</td><td class="c">$\frac{\sqrt3}2$</td><td class="c">$\frac{\sqrt2}2$</td><td class="c">$\frac12$</td><td class="c">$0$</td></tr>
+        <tr><td>$\tan$</td><td class="c">$0$</td><td class="c">$\frac{\sqrt3}3$</td><td class="c">$1$</td><td class="c">$\sqrt3$</td><td class="c">no existe</td></tr>
+      </table></div>
+      <ul>
+        <li>60° y 30° salen del triángulo equilátero de lado $L$ partido por su altura $\frac{\sqrt3}{2}L$; 45°, del rectángulo isósceles con hipotenusa $\sqrt2 L$.</li>
+        <li><b>Complementarios:</b> $\sin(90°-x)=\cos x$ y $\cos(90°-x)=\sin x$. Por eso la fila del coseno es la del seno al revés.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">3.3</span><span class="ttl">Ángulos orientados y signos por cuadrante</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>Vértice en el origen, lado fijo sobre el semieje $x$ positivo. Giro antihorario positivo, horario negativo. Con $P=(x_P,y_P)$ en el lado libre y $r=|OP|$:</p>
+      <div class="mathblock">$$\sin\alpha=\frac{y_P}{r}\qquad\cos\alpha=\frac{x_P}{r}\qquad\tan\alpha=\frac{y_P}{x_P}$$</div>
+      <div class="quad" aria-label="Signos por cuadrante">
+        <div><span class="q">II</span><span class="s">solo $\sin&gt;0$</span></div>
+        <div><span class="q">I</span><span class="s">todas $&gt;0$</span></div>
+        <div><span class="q">III</span><span class="s">solo $\tan&gt;0$</span></div>
+        <div><span class="q">IV</span><span class="s">solo $\cos&gt;0$</span></div>
+      </div>
+      <ul>
+        <li>Un ángulo pertenece al cuadrante donde está su lado libre (un negativo como $\beta$ se comporta como el positivo con el mismo lado libre).</li>
+        <li>Ángulos que difieren en vueltas completas tienen las mismas razones: $\sin\alpha=\sin(\alpha+2k\pi)$.</li>
+      </ul>
+      <div class="tbl"><table>
+        <tr><th>Sobre los ejes</th><th class="c">$0$</th><th class="c">$90°$</th><th class="c">$180°$</th><th class="c">$270°$</th></tr>
+        <tr><td>$\sin$</td><td class="c">$0$</td><td class="c">$1$</td><td class="c">$0$</td><td class="c">$-1$</td></tr>
+        <tr><td>$\cos$</td><td class="c">$1$</td><td class="c">$0$</td><td class="c">$-1$</td><td class="c">$0$</td></tr>
+        <tr><td>$\tan$</td><td class="c">$0$</td><td class="c">no existe</td><td class="c">$0$</td><td class="c">no existe</td></tr>
+      </table></div>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">3.4</span><span class="ttl">Sistema circular: radianes</span><span class="chev"></span></summary>
+    <div class="body">
+      <p class="def">La <b>circunferencia trigonométrica</b> tiene centro en el origen y radio 1. Un ángulo se mide por la longitud del arco que determina. <b>Un radián</b> es el ángulo cuyo arco mide lo mismo que el radio.</p>
+      <div class="mathblock">$$2\pi\ \text{rad}=360°\qquad \text{rad}=\text{grados}\cdot\frac{\pi}{180}\qquad 40°=\tfrac{2}{9}\pi$$</div>
+      <p>El radián convierte el ángulo en un número real sin unidades; por eso las razones se vuelven funciones $\mathbb{R}\to\mathbb{R}$.</p>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">3.5</span><span class="ttl">Ángulo de referencia: cualquier ángulo</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>$\alpha'$ es el ángulo <b>agudo</b> entre el lado libre y el eje $x$. Las razones de $\alpha$ valen, en valor absoluto, lo mismo que las de $\alpha'$; el signo lo da el cuadrante.</p>
+      <div class="tbl"><table>
+        <tr><th>Paso</th><th>Ejemplo: $\alpha=\frac{29}{6}\pi$</th></tr>
+        <tr><td>1. Restar vueltas completas</td><td>$\frac{29}6\pi=4\pi+\frac56\pi$, se trabaja con $\frac56\pi$</td></tr>
+        <tr><td>2. Ubicar el cuadrante</td><td>II: seno positivo, coseno y tangente negativos</td></tr>
+        <tr><td>3. Ángulo de referencia</td><td>$\alpha'=\pi-\frac56\pi=\frac\pi6$</td></tr>
+        <tr><td>4. Tabla con signo</td><td>$\sin=\frac12$, $\cos=-\frac{\sqrt3}2$, $\tan=-\frac{\sqrt3}3$</td></tr>
+      </table></div>
+      <p>No hace falta memorizar fórmulas por cuadrante: dibujar el ángulo alcanza. Por simetría: $\sin(-x)=-\sin x$ (impar), $\cos(-x)=\cos x$ (par).</p>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">3.6</span><span class="ttl">Identidades trigonométricas</span><span class="chev"></span></summary>
+    <div class="body">
+      <div class="mathblock">$$\sin^2x+\cos^2x=1$$</div>
+      <div class="mathblock">$$\sin(x+y)=\sin x\cos y+\cos x\sin y\qquad\cos(x+y)=\cos x\cos y-\sin x\sin y$$</div>
+      <div class="mathblock">$$\sin2x=2\sin x\cos x\qquad\cos2x=\cos^2x-\sin^2x$$</div>
+      <div class="mathblock">$$\cos^2x=\frac{1+\cos2x}2\qquad\sin^2x=\frac{1-\cos2x}2$$</div>
+      <div class="mathblock">$$\sin x+\sin y=2\sin\tfrac{x+y}2\cos\tfrac{x-y}2\qquad\cos x+\cos y=2\cos\tfrac{x+y}2\cos\tfrac{x-y}2$$</div>
+      <p><b>Verificar una identidad:</b> desarrollar un miembro hasta el otro, o ambos hasta una misma expresión. Anotar C.I. (denominadores $\neq0$). Recurso típico: multiplicar por el conjugado para generar diferencia de cuadrados (Ej. 6.a). Ejemplo de suma: $\sin15°=\sin(45°-30°)=\frac{\sqrt6-\sqrt2}4$.</p>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">3.7</span><span class="ttl">Funciones seno, coseno y tangente</span><span class="chev"></span></summary>
+    <div class="body">
+      <div class="tbl"><table>
+        <tr><th></th><th>$\sin x$</th><th>$\cos x$</th><th>$\tan x$</th></tr>
+        <tr><td>Dominio</td><td>$\mathbb{R}$</td><td>$\mathbb{R}$</td><td>$\mathbb{R}-\{\frac\pi2+k\pi\}$</td></tr>
+        <tr><td>Imagen</td><td>$[-1,1]$</td><td>$[-1,1]$</td><td>$\mathbb{R}$</td></tr>
+        <tr><td>Paridad</td><td>impar</td><td>par</td><td>impar</td></tr>
+        <tr><td>Período</td><td>$2\pi$</td><td>$2\pi$</td><td>$\pi$</td></tr>
+        <tr><td>Ceros</td><td>$k\pi$</td><td>$\frac\pi2+k\pi$</td><td>$k\pi$</td></tr>
+        <tr><td>Máximo</td><td>$1$ en $\frac\pi2+2k\pi$</td><td>$1$ en $2k\pi$</td><td>no tiene</td></tr>
+        <tr><td>Mínimo</td><td>$-1$ en $\frac{3\pi}2+2k\pi$</td><td>$-1$ en $\pi+2k\pi$</td><td>no tiene</td></tr>
+        <tr><td>$C^+$</td><td>$(2k\pi,\pi+2k\pi)$</td><td>$(-\frac\pi2+2k\pi,\frac\pi2+2k\pi)$</td><td>$(k\pi,\frac\pi2+k\pi)$</td></tr>
+        <tr><td>$C^-$</td><td>$(\pi+2k\pi,2\pi+2k\pi)$</td><td>$(\frac\pi2+2k\pi,\frac{3\pi}2+2k\pi)$</td><td>$(-\frac\pi2+k\pi,k\pi)$</td></tr>
+        <tr><td>Crece en</td><td>$(-\frac\pi2+2k\pi,\frac\pi2+2k\pi)$</td><td>$(\pi+2k\pi,2\pi+2k\pi)$</td><td>cada $(-\frac\pi2+k\pi,\frac\pi2+k\pi)$</td></tr>
+        <tr><td>Decrece en</td><td>$(\frac\pi2+2k\pi,\frac{3\pi}2+2k\pi)$</td><td>$(2k\pi,\pi+2k\pi)$</td><td>nunca</td></tr>
+      </table></div>
+      <ul>
+        <li><b>Período:</b> la menor longitud que permite calcar el gráfico. <b>Amplitud:</b> la mitad de máximo menos mínimo.</li>
+        <li>El coseno es el seno corrido $\frac\pi2$ a la izquierda. La tangente tiene AV donde $\cos=0$ y ceros donde $\sin=0$.</li>
+        <li>Seno y coseno no son inyectivas en $\mathbb{R}$; son sobreyectivas sobre $[-1,1]$. La tangente es sobreyectiva sobre $\mathbb{R}$.</li>
+        <li>Las recíprocas (cosec, sec, cotg) se grafican pero no se analizan en profundidad en este curso.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">3.8</span><span class="ttl">Transformaciones</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>Para $f(x)=A\sin\big(B(x-C)\big)+D$ (igual para coseno):</p>
+      <div class="tbl"><table>
+        <tr><th>Parámetro</th><th>Efecto</th></tr>
+        <tr><td>$|A|$</td><td>Amplitud; si $A&lt;0$, simetría respecto del eje $x$</td></tr>
+        <tr><td>$B$</td><td>Período $\frac{2\pi}{|B|}$ (tangente: $\frac{\pi}{|B|}$)</td></tr>
+        <tr><td>$C$</td><td>Corrimiento horizontal</td></tr>
+        <tr><td>$D$</td><td>Corrimiento vertical; imagen $[D-|A|,\ D+|A|]$</td></tr>
+      </table></div>
+      <div class="warn"><b>Sacar $B$ factor común</b> para leer $C$: $\cos(3x-\pi)=\cos\big(3(x-\frac\pi3)\big)$ está corrida $\frac\pi3$, no $\pi$. Ej. 9.a: $2\cos(3x-\pi)-1$ tiene período $\frac{2\pi}3$ e imagen $[-3,1]$.</div>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">3.9</span><span class="ttl">Ecuaciones trigonométricas</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>Siempre se da primero la <b>solución general</b> ($k\in\mathbb{Z}$):</p>
+      <div class="tbl"><table>
+        <tr><th>Ecuación</th><th>Familias</th></tr>
+        <tr><td>$\sin x=a$</td><td>$x=\alpha+2k\pi\ \ \vee\ \ x=(\pi-\alpha)+2k\pi$</td></tr>
+        <tr><td>$\cos x=a$</td><td>$x=\alpha+2k\pi\ \ \vee\ \ x=-\alpha+2k\pi$ (o $2\pi-\alpha$)</td></tr>
+        <tr><td>$\tan x=a$</td><td>$x=\alpha+k\pi$</td></tr>
+      </table></div>
+      <ul>
+        <li>Si la incógnita es $2x$, se resuelve para $2x$ y se divide todo por 2, <b>incluido $2k\pi$</b> (queda $k\pi$).</li>
+        <li><b>Restringir a un intervalo:</b> plantear $\text{inf}\le x(k)\le\text{sup}$, despejar $k$ y quedarse con los enteros.</li>
+        <li>Usar identidades para dejar <b>una sola función</b> (Ej. 10.c: $\cos2x+\cos x+1=0\Rightarrow\cos x(2\cos x+1)=0$).</li>
+        <li><b>Nunca dividir</b> por una expresión que puede valer 0: sacar factor común (Ej. 10.d). Dividir pierde soluciones.</li>
+        <li>Dominios con infinitos intervalos: describirlos por su patrón, como $\text{Dom}(\log(\sin x))=\bigcup(2k\pi,(2k+1)\pi)$.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">3.10</span><span class="ttl">Funciones trigonométricas inversas</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>Como no son inyectivas, se elige la <b>rama principal</b>: contiene el primer cuadrante, la función es monótona ahí y recorre toda su imagen.</p>
+      <div class="tbl"><table>
+        <tr><th>Inversa</th><th>Dominio</th><th>Imagen (rama principal)</th></tr>
+        <tr><td>$\arcsin x$</td><td>$[-1,1]$</td><td>$[-\frac\pi2,\frac\pi2]$</td></tr>
+        <tr><td>$\arccos x$</td><td>$[-1,1]$</td><td>$[0,\pi]$</td></tr>
+        <tr><td>$\arctan x$</td><td>$\mathbb{R}$</td><td>$(-\frac\pi2,\frac\pi2)$, AH $y=\pm\frac\pi2$</td></tr>
+      </table></div>
+      <ul>
+        <li>"$\arcsin x$ es el ángulo cuyo seno vale $x$" ayuda, pero es un número real de la rama principal.</li>
+        <li>Evitar la notación $\sin^{-1}$: se confunde con $\frac1{\sin}=\operatorname{cosec}$.</li>
+        <li>$\arccos 2$ no existe; $\arctan(-1)=-\frac\pi4$ (no $\frac{7\pi}4$, que está fuera de la rama).</li>
+        <li><b>Transformada</b> (Ej. 11.f): para $2\sin(x-\pi)+1$, pedir $x-\pi\in[-\frac\pi2,\frac\pi2]$, o sea $x\in[\frac\pi2,\frac{3\pi}2]$; imagen $[-1,3]$; inversa $\arcsin\frac{x-1}2+\pi$.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec why">
+    <summary><span class="num">3.11</span><span class="ttl">Relaciones e intuición</span><span class="chev"></span></summary>
+    <div class="body">
+      <p>Las razones existen porque <b>todos los triángulos rectángulos con el mismo ángulo agudo son semejantes</b>: tienen los tres ángulos iguales, y por Thales sus lados son proporcionales. El cociente opuesto sobre hipotenusa no depende del tamaño ni de la unidad, solo de $\alpha$. Por eso es legítimo escribir $\sin\alpha$ como función de $\alpha$, y por eso funciona con fuerzas.</p>
+      <p>El salto a cualquier ángulo es reescribir con coordenadas: el opuesto pasa a ser $y_P$ y el adyacente $x_P$. Ya no hace falta un triángulo y los <b>signos salen solos</b> (en el II cuadrante $x_P&lt;0$). Con $r=1$ queda $\sin\alpha=y$, $\cos\alpha=x$: la identidad pitagórica es literalmente $x^2+y^2=1$; la imagen $[-1,1]$ es que las coordenadas del círculo no pasan de 1; el período $2\pi$ es dar una vuelta y volver al mismo punto; la paridad es reflejar respecto del eje $x$ ($y$ cambia de signo, $x$ no).</p>
+      <p>Las ecuaciones tienen infinitas soluciones porque las funciones son periódicas, o sea no inyectivas. Por la misma razón las inversas exigen restringir el dominio, igual que con $x^2$. Consecuencia que aparece en parciales:</p>
+      <div class="key">$\sin(\arcsin x)=x$ vale solo si $x\in[-1,1]$. $\ \arcsin(\sin x)=x$ vale solo si $x\in[-\frac\pi2,\frac\pi2]$: por ejemplo $\arcsin\big(\sin\frac{5\pi}6\big)=\frac\pi6$.</div>
+    </div>
+  </details>
+
+  <details class="sec use">
+    <summary><span class="num">3.12</span><span class="ttl">Lo que hay que saber usar</span><span class="chev"></span></summary>
+    <div class="body">
+      <ul>
+        <li><b>Razones de cualquier ángulo:</b> reducir vueltas, cuadrante, ángulo de referencia, tabla y signo.</li>
+        <li><b>Problemas de aplicación:</b> encontrar el triángulo rectángulo, ubicar el ángulo (alternos internos para depresión) y usar tangente o Pitágoras. Faro: $30(\sqrt3-1)\approx21{,}96$ m.</li>
+        <li><b>Ecuaciones:</b> una sola función, factor común, solución general y después restricción al intervalo.</li>
+        <li><b>Graficar</b> $A\sin(B(x-C))+D$: factor común $B$, período, corrimientos, imagen, un ciclo y repetir.</li>
+        <li><b>Inversa de transformada:</b> que el argumento caiga en la rama principal, después despejar con $\arcsin$, $\arccos$ o $\arctan$.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec err">
+    <summary><span class="num">3.13</span><span class="ttl">Errores y huecos del apunte</span><span class="chev"></span></summary>
+    <div class="body">
+      <ul>
+        <li><b>Ej. 10.f</b> deja sin hacer la segunda familia. Con $x=\frac{5\pi}6+2k\pi$ la cuenta da $k\in\{0,1\}$. Solución completa en $[-\pi,\frac{22}7\pi]$: $\left\{\frac\pi6,\frac{5\pi}6,\frac{13\pi}6,\frac{17\pi}6\right\}$.</li>
+        <li><b>Ej. 10.e</b> da solo el resultado. Razonamiento: $2\sin^2(3x)-2\cos^2(3x)=-2\cos(6x)$, así que queda $|3-2\cos6x|=2$; como $3-2\cos6x\in[1,5]$ siempre es positivo, la rama "$=-2$" no tiene solución; queda $\cos6x=\frac12$ y de ahí $x=\frac\pi{18}+k\frac\pi3\ \vee\ x=\frac{5\pi}{18}+k\frac\pi3$.</li>
+        <li><b>Ej. 1.b:</b> la línea donde se da $\operatorname{cosec}45°$ es ambigua en la copia. Lo correcto es $\operatorname{cosec}45°=\frac2{\sqrt2}=\sqrt2$; si en tu copia dice $\frac{\sqrt2}2$, es un error. La cuenta final ($\frac{\sqrt2}2$) está bien.</li>
+        <li><b>Mínimo del seno</b> (7.1.4, queda como ejercicio): $-1$ en $x=\frac{3\pi}2+2k\pi$.</li>
+        <li><b>Ej. 9.b</b> para chequear: $-3\tan(2x-\frac\pi2)=3\operatorname{cotg}(2x)$, lo que confirma las AV en $x=\frac{k\pi}2$.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="num">3.14</span><span class="ttl">Autoevaluación</span><span class="chev"></span></summary>
+    <div class="body">
+      <details class="qa"><summary>$\sin\frac{5\pi}3$ y $\cos\frac{5\pi}3$</summary><div class="ans">IV cuadrante, $\alpha'=\frac\pi3$: $\sin=-\frac{\sqrt3}2$, $\cos=\frac12$.</div></details>
+      <details class="qa"><summary>Período e imagen de $f(x)=2\cos(3x-\pi)-1$</summary><div class="ans">Período $\frac{2\pi}3$, corrimiento $\frac\pi3$ a la derecha, imagen $[-3,1]$.</div></details>
+      <details class="qa"><summary>Solución general de $\cos x=\frac{\sqrt2}2$</summary><div class="ans">$x=\frac\pi4+2k\pi\ \vee\ x=\frac{7\pi}4+2k\pi$ (o $-\frac\pi4+2k\pi$), $k\in\mathbb{Z}$.</div></details>
+      <details class="qa"><summary>$\arcsin\big(\sin\frac{5\pi}6\big)$</summary><div class="ans">$\sin\frac{5\pi}6=\frac12$ y el arcoseno devuelve el valor de la rama principal: $\frac\pi6$.</div></details>
+      <details class="qa"><summary>¿Por qué la tangente tiene período $\pi$ y no $2\pi$?</summary><div class="ans">Porque $\sin(x+\pi)=-\sin x$ y $\cos(x+\pi)=-\cos x$; al dividir los signos se cancelan y $\tan(x+\pi)=\tan x$.</div></details>
+      <details class="qa"><summary>Verificar $\sin^4x+\cos^4x=1-\frac12\sin^2(2x)$ (idea)</summary><div class="ans">$\sin^4+\cos^4=(\sin^2+\cos^2)^2-2\sin^2\cos^2=1-\frac12(2\sin x\cos x)^2=1-\frac12\sin^2 2x$.</div></details>
+    </div>
+  </details>
+</section>
+
+<footer>Basado en los apuntes de la Secretaría de Admisión ITBA: Funciones, Funciones Exponenciales y Logarítmicas, Trigonometría y funciones trigonométricas.</footer>
+</div>
+
+<script>
+(function(){
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const panels = Array.from(document.querySelectorAll('.panel'));
+  const q = document.getElementById('q');
+  const count = document.getElementById('count');
+  let current = 'funciones';
+
+  function show(id){
+    if(!panels.some(p => p.id === id)) id = 'funciones';
+    current = id;
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.panel === id)));
+    if(!document.body.classList.contains('searching')){
+      panels.forEach(p => p.hidden = p.id !== id);
+    }
+    try{ localStorage.setItem('repaso-tab', id); }catch(e){}
+  }
+  tabs.forEach(t => t.addEventListener('click', () => {
+    if(q.value){ q.value=''; runSearch(); }
+    show(t.dataset.panel);
+    try{ history.replaceState(null,'','#'+t.dataset.panel); }catch(e){}
+    window.scrollTo({top:0});
+  }));
+
+  function visibleSecs(){
+    return document.body.classList.contains('searching')
+      ? Array.from(document.querySelectorAll('details.sec:not(.hidden-s)'))
+      : Array.from(document.querySelectorAll('#'+current+' details.sec'));
+  }
+  document.getElementById('openAll').addEventListener('click', () => {
+    visibleSecs().forEach(d => { d.open = true; d.querySelectorAll('details.sub').forEach(s => s.open = true); });
+  });
+  document.getElementById('closeAll').addEventListener('click', () => {
+    visibleSecs().forEach(d => d.open = false);
+  });
+
+  const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  function runSearch(){
+    const term = norm(q.value.trim());
+    const secs = Array.from(document.querySelectorAll('details.sec'));
+    if(!term){
+      document.body.classList.remove('searching');
+      secs.forEach(d => d.classList.remove('hidden-s'));
+      panels.forEach(p => { p.removeAttribute('data-empty'); p.hidden = p.id !== current; });
+      count.textContent = '';
+      return;
+    }
+    document.body.classList.add('searching');
+    let n = 0;
+    panels.forEach(p => {
+      let any = false;
+      p.querySelectorAll('details.sec').forEach(d => {
+        const hit = norm(d.textContent).includes(term);
+        d.classList.toggle('hidden-s', !hit);
+        if(hit){ d.open = true; any = true; n++; }
+      });
+      p.hidden = !any;
+      p.setAttribute('data-empty', any ? '0' : '1');
+    });
+    count.textContent = n ? n + (n === 1 ? ' sección' : ' secciones') : 'Sin resultados';
+  }
+  q.addEventListener('input', runSearch);
+
+  let start = (location.hash || '').slice(1);
+  if(!start){ try{ start = localStorage.getItem('repaso-tab') || ''; }catch(e){} }
+  show(start || 'funciones');
+})();
+</script>
+
+</body></html>
